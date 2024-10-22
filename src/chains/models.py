@@ -106,6 +106,9 @@ class Chain(models.Model):
     block_explorer_uri_address_template = models.URLField()
     block_explorer_uri_tx_hash_template = models.URLField()
     block_explorer_uri_api_template = models.URLField()
+    beacon_chain_explorer_uri_public_key_template = models.URLField(
+        blank=True, null=True
+    )
     currency_name = models.CharField(max_length=255)
     currency_symbol = models.CharField(max_length=255)
     currency_decimals = models.IntegerField(default=18)
@@ -140,7 +143,25 @@ class Chain(models.Model):
         max_length=255, null=True, blank=True
     )
     prices_provider_chain_name = models.CharField(max_length=255, null=True, blank=True)
+    balances_provider_chain_name = models.CharField(
+        max_length=255, null=True, blank=True
+    )
+    balances_provider_enabled = models.BooleanField(
+        default=False,
+        help_text="This flag informs API clients whether the balances provider is enabled for the chain",
+    )
     hidden = models.BooleanField(default=False)
+    safe_singleton_address = EthereumAddressField(null=True, blank=True)  # type: ignore[no-untyped-call]
+    safe_proxy_factory_address = EthereumAddressField(null=True, blank=True)  # type: ignore[no-untyped-call]
+    multi_send_address = EthereumAddressField(null=True, blank=True)  # type: ignore[no-untyped-call]
+    multi_send_call_only_address = EthereumAddressField(null=True, blank=True)  # type: ignore[no-untyped-call]
+    fallback_handler_address = EthereumAddressField(null=True, blank=True)  # type: ignore[no-untyped-call]
+    sign_message_lib_address = EthereumAddressField(null=True, blank=True)  # type: ignore[no-untyped-call]
+    create_call_address = EthereumAddressField(null=True, blank=True)  # type: ignore[no-untyped-call]
+    simulate_tx_accessor_address = EthereumAddressField(null=True, blank=True)  # type: ignore[no-untyped-call]
+    safe_web_authn_signer_factory_address = EthereumAddressField(
+        null=True, blank=True
+    )  # type: ignore[no-untyped-call]
 
     def get_disabled_wallets(self) -> QuerySet["Wallet"]:
         all_wallets = Wallet.objects.all()
